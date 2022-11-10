@@ -35,11 +35,12 @@ systemctl status nginx   # 查看 Nginx 运行状态
 
 ```nginx
 upstream myserver{
-  # ip_hash;
-  # weight;
-  # server localhost:8081 weight=2;
-	server localhost:8081;
-	server localhost:8080;
+ 		# 哈希算法，自动定位到该服务器 保证唯一ip定位到同一部机器 用于解决session登录态的问题
+    ip_hash; 
+    server 127.0.0.1:9090 down; (down 表示单前的server暂时不参与负载) 
+    server 127.0.0.1:8080 weight=2; (weight 默认为1.weight越大，负载的权重就越大) 
+    server 127.0.0.1:6060; 
+    server 127.0.0.1:7070 backup; (其它所有的非backup机器down或者忙的时候，请求backup机器) 
 }
 server {
 	listen 80;
@@ -101,7 +102,7 @@ server {
 
 为什么需要webpack打包gzip文件，还要nginx开启gzip压缩？
 
-webpack前置打包可以环境Nginx的服务器压力，nginx接受请求后发现有现成的gzip包就会直接返回
+webpack前置打包可以缓解Nginx的服务器压力，nginx接受请求后发现有现成的gzip包就会直接返回
 
 如果不经过webpack打包好gzip文件，那么nginx就会帮你做这个压缩的操作，这样就给服务器带来了压力。
 
