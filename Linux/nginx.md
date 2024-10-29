@@ -7,7 +7,7 @@ nginx -s reload  # 向主进程发送信号，重新加载配置文件，热重�
 nginx -s reopen	 # 重启 Nginx
 nginx -s stop    # 快速关闭
 nginx -s quit    # 等待工作进程处理完成后关闭
-nginx -T         # 查看当前 Nginx 最终的配置
+nginx -T         # 查看当前 Nginx 文件夹位置
 
 ```
 
